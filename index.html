@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Are any of these words in the bible?</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Ubuntu:wght@400;500;700&display=swap');
+    body, html {
+        background-color: rgb(28, 28, 28);
+        width: 100%; height: 100%;
+        margin: 0;
+        font-family: Merriweather;
+        color: white;
+    }
+
+    .bible-icon {
+        background-image: url("/bible.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 30vh;
+        height: 30vh;
+    }
+
+    .main-container {
+        width: 100%; height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .center-cntr {
+        display: flex;
+        /* align-items: center; */
+        justify-content: center;
+        flex-direction: row;
+        max-width: 100vw;
+        width: 60vh;
+    }
+
+    #find-out-btn {
+        margin-top: 20px; 
+        user-select: none;
+        align-self: center;
+        border: 1px solid rgb(148, 145, 145);
+        border-radius: 8px;
+        color: rgb(16, 15, 15);
+        padding: 12px 20px 12px 20px;
+        transition: all 0.2s;
+        background-color: rgba(255, 255, 255, 0.685);
+    }
+
+    #find-out-btn:hover {
+        background-color: rgba(255, 255, 255, 0.914);
+        cursor: pointer;
+    }
+
+    #s2 {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .top-text {
+        font-size: 24px;
+        font-weight: 200;
+        color: white;
+    }
+
+    .bottom-text {
+        color: rgba(255, 255, 255, 0.431);
+    }
+
+    .quote {
+        font-style: italic;
+        color: rgba(144, 143, 143, 0.71);
+        width: 100%;
+        margin-bottom: 16px;
+        padding: 32px 24px 32px 24px;
+        text-align: center;
+        background-color: rgb(22, 21, 21);
+        border-radius: 16px;
+        border: 1px solid rgb(50, 49, 49);
+        align-self: center;
+    }
+
+    b {
+        font-weight: 900;
+    }
+
+    a {
+        text-decoration: none;
+        color: rgb(155, 154, 154);
+    }
+
+</style>
+<body>
+    <div class="main-container">
+        <div id="s1" class="center-cntr">
+            <!-- <div class="bible-icon"></div> -->
+            <div style="height: 100%; display: flex; flex-direction: column;">
+                <div style="font-size: 28px; color: rgb(244, 231, 168); font-weight: bold; padding: 15px 0px 15px 0px;">Are any of these words in the bible?</div>
+                <div data-bs-theme="dark" class="form-group">
+                    <textarea spellcheck="false" autocorrect="off" style="resize:none;" class="form-control shadow-none outline-none" placeholder="Write here to find out"  cols="48" maxlength="500"  autocapitalize="off" rows="7"></textarea>
+                </div>
+                <div id="ctr" style="user-select: none; font-size: 10px; padding-top: 5px; align-self: flex-end; color: white;"> 0 / 500 </div>
+                <div id="find-out-btn"> Let's find out </div>
+            </div>
+        </div>
+        <div style="display: none" id="s2" class="center-cntr">
+            
+            <div style="padding: 16px; display: flex; flex-direction: column; align-items: flex-start; background-color: rgb(27, 27, 27); border: 1px solid rgba(255, 255, 255, 0.091);">
+                <div class="quote">
+                </div>
+                <div class="top-text"></div>
+                <div class="bottom-text">
+                    Overall score: 2.73 <br>
+                    <!-- <a href="" style="font-size: 12px;">How do we calculate it?</a> -->
+                </div>
+            </div>
+            <a style="margin-top: 15px; user-select: none;" href="/"> <-- Go back</a>
+            <!-- <div style="background-color: rgb(24, 24, 24); font-weight: bold; border: 1px solid rgba(255, 255, 255, 0.091); width: 100%; padding: 16px; margin-top: 20px;">
+                <a href="">https://localhost/?v=askzfferkzl</a>
+            </div> -->
+        </div>
+    </div>
+</body>
+
+<script>
+const $ = (e) => document.querySelector(e);
+
+const ta = $("textarea");
+ta.addEventListener("input", () => {
+    $("#ctr").innerHTML = `${ta.value.length} / 500` 
+});
+
+$("#find-out-btn").addEventListener("click", () => {
+    if ( ta.value.length < 3 ) return;
+    
+    const messageOnValue = [
+        [-99999999, "None of these words are in the bible... 😦"],
+        [-1.6, "Not many of these words are in the bible 😞"],
+        [0.2, "Perhaps some of these words are in the bible 🙁"],
+        [0.6, "Some of these words are in the bible 🙂"],
+        [1.2, "Most of these words appear in bible 🥰"],
+        [2.4, "Those words are in the bible 😍"],
+    ]
+
+    fetch("/was-it/", {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: "follow", // manual, *follow, error
+        referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: JSON.stringify({"text":ta.value}),
+    }).then(data=>data.json()).then( res => {
+        if ( !res["result"] ) {
+            alert("There must be an error in your message")
+            return;
+        }
+        $("#s1").style.display = "none";
+        $("#s2").style.display = "flex";
+        $(".bottom-text").innerHTML = `Overall score: ${res["result"].toFixed(2)}`
+        for ( const msg of messageOnValue ) {
+            console.log(msg)
+            if ( msg[0] < Number(res["result"]) ) {
+                console.log("huh")
+                $(".top-text").innerHTML = msg[1];
+            }
+        }
+        $(".quote").innerHTML = `"${ta.value}"`
+    })
+})
+
+</script>
+</html>
